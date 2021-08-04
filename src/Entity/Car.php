@@ -14,6 +14,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=CarRepository::class)
  * @ApiResource (
+ *      collectionOperations={
+ *          "get"={"security"="is_granted('ROLE_USER')"},
+ *          "post"={"security"="is_granted('ROLE_USER')"}
+ *     },
  *      normalizationContext={"groups":{"car:read"}},
  *      denormalizationContext={"groups":{"car:write"}},
  *     attributes={
