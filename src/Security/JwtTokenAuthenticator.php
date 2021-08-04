@@ -89,7 +89,7 @@ class JwtTokenAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
     {
-        // TODO: Implement onAuthenticationSuccess() method.
+
     }
 
     public function supportsRememberMe()

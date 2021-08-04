@@ -15,15 +15,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/register/{email}/{password}", name="register")
+     * @Route("/register/{email}/{password}/{phoneNumber}", defaults={"phoneNumber"=null}, name="register")
      */
-    public function register(string $email, string $password, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): Response
+    public function register(string $email, string $password, ?string $phoneNumber, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): Response
     {
         $user = new User();
         $user->setEmail($email);
         $user->setRoles(['ROLE_USER']);
         $hashPassword = $passwordHasher->hashPassword($user, $password);
         $user->setPassword($hashPassword);
+        $user->setPhoneNumber($phoneNumber);
         $em->persist($user);
         $em->flush();
 
