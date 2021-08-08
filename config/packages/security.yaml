@@ -20,15 +20,14 @@ security:
             pattern: ^/api/
             stateless: true
             provider: app_user_provider
-            guard:
-                authenticators:
-                    - App\Security\JwtTokenAuthenticator
+#            guard:
+#                authenticators:
+#                    - App\Security\JwtTokenAuthenticator
+            custom_authenticators:
+                - App\Security\JwtTokenNewAuthenticator
         main:
             lazy: true
             provider: app_user_provider
-
-
-
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

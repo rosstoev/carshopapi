@@ -51,6 +51,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $phoneNumber;
 
+    /**
+     * Get user is even
+     * @Groups ("user:read")
+     */
+    public bool $isEven = false;
+
     public function getId(): ?int
     {
         return $this->id;

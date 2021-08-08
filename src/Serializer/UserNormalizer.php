@@ -50,7 +50,7 @@ class UserNormalizer implements ContextAwareNormalizerInterface, NormalizerAware
     private function userIsOwner(?User $object): bool
     {
         /** @var User|null $loginUser */
-        $loginUser = $this->tokenStorage->getToken()->getUser();
+        $loginUser = null != $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
 
         if (null != $loginUser && $loginUser->getId() == $object->getId()) {
             return true;

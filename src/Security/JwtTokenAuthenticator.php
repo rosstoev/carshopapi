@@ -94,6 +94,6 @@ class JwtTokenAuthenticator extends AbstractGuardAuthenticator
 
     public function supportsRememberMe()
     {
-       return false;
+        return false;
     }
 }

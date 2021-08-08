@@ -26,3 +26,8 @@ services:
     App\Serializer\UserNormalizer:
         tags:
             - { name: 'serializer.normalizer', priority: 64 }
+
+    App\DataProvider\UserDataProvider:
+        bind:
+            $collectionDataProvider: '@api_platform.doctrine.orm.default.collection_data_provider'
+            $itemDataProvider: '@api_platform.doctrine.orm.default.item_data_provider'
