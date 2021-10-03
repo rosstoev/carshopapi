@@ -16,7 +16,42 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource (
  *      collectionOperations={
  *          "get"={"security"="is_granted('ROLE_USER')"},
- *          "post"={"security"="is_granted('ROLE_USER')"}
+ *          "post"={
+ *              "controller" = "App\Controller\CarCreatorController",
+ *              "deserialize" = false,
+ *              "openapi_context" = {
+ *                  "requestBody" = {
+ *                      "description" = "Create new car",
+ *                      "required" = true,
+ *                      "content" = {
+ *                          "multipart/form-data" = {
+ *                              "schema" = {
+ *                                  "type" = "object",
+ *                                  "properties" = {
+ *                                      "brand" = {
+ *                                          "description" = "The name of the brand",
+ *                                          "type" = "string"
+ *                                      },
+ *                                      "model" = {
+ *                                          "description" = "The name of the model",
+ *                                          "type" = "string"
+ *                                      },
+ *                                      "color" = {
+ *                                          "description" = "Vehicle color",
+ *                                          "type" = "string"
+ *                                      },
+ *                                      "image" = {
+ *                                          "description" = "Upload image for the car",
+ *                                          "type" = "string",
+ *                                          "format" = "binary"
+ *                                      }
+ *                                  }
+ *                              }
+ *                          }
+ *                      }
+ *                  }
+ *              }
+ *          }
  *     },
  *      normalizationContext={"groups":{"car:read"}},
  *      denormalizationContext={"groups":{"car:write"}},
@@ -37,6 +72,7 @@ class Car
     private $id;
 
     /**
+     * @Assert\NotBlank ()
      * @ORM\Column(type="string", length=255)
      * @Groups ({"car:read", "car:write", "color:read"})
      */
@@ -62,6 +98,14 @@ class Car
      */
     private $color;
 
+    /**
+     * @ORM\ManyToOne (targetEntity="App\Entity\Image", cascade={"persist"})
+     * @ORM\JoinColumn (nullable=true)
+     * @Groups ({"car:read"})
+     * @var Image|null
+     */
+    private $image;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -77,7 +121,7 @@ class Car
         return $this->brand;
     }
 
-    public function setBrand(string $brand): self
+    public function setBrand(?string $brand): self
     {
         $this->brand = $brand;
 
@@ -89,7 +133,7 @@ class Car
         return $this->model;
     }
 
-    public function setModel(string $model): self
+    public function setModel(?string $model): self
     {
         $this->model = $model;
 
@@ -119,4 +163,21 @@ class Car
 
         return $this;
     }
+
+    /**
+     * @return Image|null
+     */
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param Image|null $image
+     */
+    public function setImage(?Image $image): void
+    {
+        $this->image = $image;
+    }
+
 }
